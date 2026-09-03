@@ -35,7 +35,7 @@
 | 1 | Console เตือนสีเหลืองเรื่องรายการ (list) ที่แผงสรุป | ไฟล์ SummaryPanel.jsx บรรทัดที่ 12 | ไม่ได้ใส่ key ตรง article |   ทำการใส่ key={key} <article key={key} className="summary-card"> |
 | 2 | ตัวเลข "เสร็จสิ้น" ในแผงสรุปไม่ตรงกับที่เห็นจริง | ไฟล์ DashboardPage.jsx  บรรทัด 46| สาเหตุคือ ใส่ completed เป็น in-progress ลืมใส่ request ตรง ท้ายสุด | แก้ เป็น completed และ ใส่ request เข้าไป |
 | 3 | กดตัวกรองสถานะใด ๆ แล้วผลไม่เปลี่ยน (เหมือนกรองไม่ทำงาน) | บรรทัดที่55 ใน Dashboard.jsx | เพราะ filteredrequests มันเป็น pending | แก้ให้เป็น statusfilter แบบนี้ requests.filter((request) => request.status === statusFilter); |
-| 4 | เปลี่ยน URL `REQ-101` → `REQ-102` แล้วข้อมูลไม่เปลี่ยน |  |  |  |
+| 4 | เปลี่ยน URL `REQ-101` → `REQ-102` แล้วข้อมูลไม่เปลี่ยน | RequestDetailPage.jsx บรรทัด 28 | useEffect ใน requestdetailpage.jsx ว่างเปล่า | [requestId, reloadKey] |
 | 5 | กด "ลบ" แล้วการ์ดหาย แต่ตัวเลขในแผงสรุปไม่ลด |  |  |  |
 | 6 | กด "ลบ" แล้วหน้าพัง/ว่างเปล่า |  |  |  |
 
