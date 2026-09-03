@@ -9,7 +9,7 @@ function SummaryPanel({ summary }) {
   return (
     <section className="summary-grid" aria-label="สรุปคำร้อง">
       {items.map(([key, label]) => (
-        <article className="summary-card">
+        <article key={key} className="summary-card">
           <span>{label}</span>
           <strong>{summary[key]}</strong>
         </article>
