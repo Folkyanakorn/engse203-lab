@@ -61,7 +61,7 @@ function DashboardPage() {
 
   async function handleDelete(requestId) {
     try {
-      const nextRequests = deleteRequest(requestId);
+      const nextRequests = await deleteRequest(requestId);
       setRequests(nextRequests);
       setNotice(`ลบคำร้อง ${requestId} แล้ว`);
     } catch (error) {
