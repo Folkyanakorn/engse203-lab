@@ -42,9 +42,33 @@ B1
 | 6 | กด "ลบ" แล้วหน้าพัง/ว่างเปล่า | dashboard.jsx บรรทัด 64 | ลืมใส่ await | ใส่ await |
 
 ---
-B2 
-| # | อาการ (ให้มาแล้ว) | ไฟล์ : บรรทัด | สาเหตุ (ทำไมผิด) | แก้อย่างไร |
-|---|---|---|---|---|
+B2
+
+CP B2.1
+เพิ่ม state // const [searchText, setSearchText] = useState('');
+
+แก้ dashboard จาก 
+    const filteredRequests = statusFilter === 'all'
+    ? requests
+    : requests.filter((request) => request.status === statusFilter);
+    
+    ให้เป็น
+    const filteredRequests = requests.filter((request) => {
+    const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
+    const matchesSearch = searchText === '' ||
+      request.requestType?.toLowerCase().includes(searchText.toLowerCase()) ||
+      request.location?.toLowerCase().includes(searchText.toLowerCase());
+
+    return matchesStatus && matchesSearch;
+  });
+  และเพิ่ม input ข้างล่างสุด 
+ /* <input
+ /*             type="text"
+   /*           placeholder="ค้นหาจากประเภทหรือสถานที่"
+     /*         value={searchText}
+       /*       onChange={(e) => setSearchText(e.target.value)}
+         /*   />
+
 ## เช็คก่อนส่ง
 
 - [/] กรอกครบทั้ง 6 บั๊ก (ไฟล์:บรรทัด · สาเหตุ · แก้อย่างไร)
