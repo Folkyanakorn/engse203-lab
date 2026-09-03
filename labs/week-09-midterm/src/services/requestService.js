@@ -1,8 +1,8 @@
-/**
- * requestService.js — ชั้นเข้าถึงข้อมูล
- */
-
-import { clearStoredRequests, readStoredRequests, writeStoredRequests } from './requestStorage.js';
+import {
+  clearStoredRequests,
+  readStoredRequests,
+  writeStoredRequests,
+} from './requestStorage.js';
 
 const LAB_DELAY_MS = 420;
 
@@ -18,41 +18,35 @@ async function fetchSeedRequests() {
   const baseUrl = import.meta.env?.BASE_URL ?? '/';
   const response = await fetch(`${baseUrl}data/initialRequests.json`);
   if (!response.ok) throw new Error('ไม่สามารถโหลดข้อมูลตัวอย่างได้');
-  return structuredClone(await response.json());
+  const requests = await response.json();
+  return structuredClone(requests);
+}
+
+async function loadNormalRequests(onRecovery) {
+  const stored = readStoredRequests();
+  if (stored.status === 'valid') return stored.requests;
+
+  const seedRequests = await fetchSeedRequests();
+  writeStoredRequests(seedRequests);
+
+  if (stored.status === 'invalid') {
+    onRecovery?.('พบข้อมูลเดิมที่อ่านไม่ได้ ระบบจึงกู้ข้อมูลตัวอย่างให้แล้ว');
+  }
+  return seedRequests;
 }
 
 export async function getRequests(options = {}) {
   await waitForLabDelay();
-
   if (options.scenario === 'error') {
     throw new Error('LAB scenario: จำลองการโหลดข้อมูลไม่สำเร็จ');
   }
-  if (options.scenario === 'empty') {
-    return [];
-  }
-
+  if (options.scenario === 'empty') return [];
   return loadNormalRequests(options.onRecovery);
 }
 
 export async function getRequestById(requestId) {
   const requests = await getRequests();
   return requests.find((request) => request.id === requestId) ?? null;
-}
-
-async function loadNormalRequests(onRecovery) {
-  const stored = readStoredRequests();
-
-  if (stored.status === 'valid') {
-    return stored.requests;
-  }
-
-  if (stored.status === 'invalid') {
-    onRecovery?.('ข้อมูลใน LocalStorage ชำรุด ระบบได้ทำการรีเซ็ตเป็นข้อมูลเริ่มต้นแล้ว');
-  }
-
-  const seedRequests = await fetchSeedRequests();
-  writeStoredRequests(seedRequests);
-  return seedRequests;
 }
 
 function readText(value) {
@@ -79,39 +73,46 @@ function createRequestId(requests) {
 }
 
 export async function addRequest(requestInput) {
-  await waitForLabDelay();
   validateRequestInput(requestInput);
-
-  const requests = await getRequests();
+  const requests = await loadNormalRequests();
   const newRequest = {
     id: createRequestId(requests),
     requesterName: requestInput.requesterName.trim(),
-    requestType: requestInput.requestType.trim(),
+    requestType: requestInput.requestType,
     location: requestInput.location.trim(),
     details: requestInput.details.trim(),
     priority: requestInput.priority,
     status: 'pending',
   };
-
   writeStoredRequests([...requests, newRequest]);
   return structuredClone(newRequest);
 }
 
 export async function deleteRequest(requestId) {
-  await waitForLabDelay();
-
-  const currentRequests = await getRequests();
-  const updatedRequests = currentRequests.filter((r) => r.id !== requestId);
-
-  writeStoredRequests(updatedRequests);
+  const requests = await loadNormalRequests();
+  const nextRequests = requests.filter((request) => request.id !== requestId);
+  writeStoredRequests(nextRequests);
+  return structuredClone(nextRequests);
 }
 
 export async function resetRequests() {
-  await waitForLabDelay();
-
   clearStoredRequests();
-  const seedData = await fetchSeedRequests();
-  writeStoredRequests(seedData);
+  const seedRequests = await fetchSeedRequests();
+  writeStoredRequests(seedRequests);
+  return structuredClone(seedRequests);
+}
 
-  return seedData;
+/**
+ * updateRequestStatus · เปลี่ยนสถานะคำร้องแล้ว persist
+ * (ให้มาแล้ว — โครงเดียวกับ deleteRequest: อ่าน → แก้แบบ immutable → เขียน → คืนชุดใหม่)
+ */
+export async function updateRequestStatus(requestId, nextStatus) {
+  const allowed = ['pending', 'in-progress', 'completed'];
+  if (!allowed.includes(nextStatus)) throw new Error('สถานะไม่ถูกต้อง');
+  const requests = await getRequests();
+  const nextRequests = requests.map((request) =>
+    request.id === requestId ? { ...request, status: nextStatus } : request,
+  );
+  writeStoredRequests(nextRequests);
+  return structuredClone(nextRequests);
 }

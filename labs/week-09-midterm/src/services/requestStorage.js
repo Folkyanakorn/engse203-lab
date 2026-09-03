@@ -1,7 +1,3 @@
-/**
- * requestStorage.js — ที่เดียวที่แตะ localStorage ได้
- */
-
 export const STORAGE_KEY = 'engse203-campus-requests-v1';
 export const SCHEMA_VERSION = 1;
 
@@ -33,22 +29,18 @@ function validateRequests(requests) {
   return new Set(requests.map((request) => request.id)).size === requests.length;
 }
 
-/**
- * TODO 5B-A · อ่านข้อมูลที่เก็บไว้ พร้อมรับมือกับข้อมูลที่เสียหาย
- */
 export function readStoredRequests() {
   const rawValue = localStorage.getItem(STORAGE_KEY);
   if (rawValue === null) return { status: 'missing' };
 
   try {
     const envelope = JSON.parse(rawValue);
-
     if (
-      !envelope ||
-      envelope.schemaVersion !== SCHEMA_VERSION ||
-      !validateRequests(envelope.requests)
+      !envelope
+      || envelope.schemaVersion !== SCHEMA_VERSION
+      || !validateRequests(envelope.requests)
     ) {
-      return { status: 'invalid', reason: 'โครงสร้างข้อมูลไม่ถูกต้องตาม schema' };
+      return { status: 'invalid', reason: 'รูปแบบหรือเวอร์ชันข้อมูลไม่ถูกต้อง' };
     }
 
     return { status: 'valid', requests: structuredClone(envelope.requests) };
@@ -57,22 +49,16 @@ export function readStoredRequests() {
   }
 }
 
-/**
- * TODO 5B-B · เขียนข้อมูลลงที่เก็บ
- */
 export function writeStoredRequests(requests) {
   if (!validateRequests(requests)) {
     throw new Error('ไม่สามารถบันทึกข้อมูลคำร้องที่ไม่ตรง schema ได้');
   }
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({
-      schemaVersion: SCHEMA_VERSION,
-      updatedAt: new Date().toISOString(),
-      requests: structuredClone(requests),
-    })
-  );
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    schemaVersion: SCHEMA_VERSION,
+    updatedAt: new Date().toISOString(),
+    requests: structuredClone(requests),
+  }));
 }
 
 export function clearStoredRequests() {
