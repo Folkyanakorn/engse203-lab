@@ -1,0 +1,13 @@
+{
+  "week": "week-11",
+  "title": "MongoDB, Mongoose & NoSQL CRUD",
+  "student": "นาย ญาณากร หวังระบอบ",
+  "studentId": "68543210023-6",
+  "repoUrl": "https://github.com/Folkyanakorn/engse203-lab",
+  "status": "draft",
+  "pullRequestUrl": "",
+  "submissionTag": "lab-11-submission-v1",
+  "testStatus": "",
+  "notes": "สร้างตามหัวข้อ เพราะ labs ยังไม่มีโจทย์ละเอียด ต้องตรวจเทียบโจทย์จริง ทดสอบเอง และเปิด PR",
+  "sourceOrigin": "topic-based (no official spec yet)"
+}

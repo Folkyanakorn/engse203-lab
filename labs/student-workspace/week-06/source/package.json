@@ -1,0 +1,15 @@
+{
+  "name": "engse203-week06-campus-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "vitest run",
+    "check": "node scripts/check-project.mjs"
+  },
+  "dependencies": { "express": "^5.1.0" },
+  "devDependencies": { "supertest": "^7.2.2", "vitest": "^2.1.0" }
+}

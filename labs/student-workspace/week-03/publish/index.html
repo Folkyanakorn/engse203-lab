@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENGSE203 LAB 3 — Campus Service Request</title>
+  <script type="module" crossorigin src="./assets/index-DpHskZEF.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-C3BFOMhj.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow">ENGSE203 • LAB 3</p>
+      <h1>Campus Service Request</h1>
+      <p>Responsive Web UI, Event and Form</p>
+    </div>
+  </header>
+
+  <main class="container page-grid">
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">Create Service Request</h2>
+      <form id="request-form" novalidate>
+        <div class="field">
+          <label for="requester-name">Requester Name</label>
+          <input id="requester-name" name="requesterName" type="text" autocomplete="name"
+                 placeholder="เช่น ญาณากร หวังระบอบ" aria-describedby="requester-name-error" />
+          <p id="requester-name-error" class="error" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label for="request-type">Request Type</label>
+          <select id="request-type" name="requestType" aria-describedby="request-type-error">
+            <option value="">-- เลือกประเภทคำขอ --</option>
+            <option value="Classroom">Classroom / ห้องเรียน</option>
+            <option value="IT Support">IT Support / ระบบคอมพิวเตอร์</option>
+            <option value="Facility">Facility / อาคารสถานที่</option>
+            <option value="Other">Other / อื่น ๆ</option>
+          </select>
+          <p id="request-type-error" class="error" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label for="request-details">Details</label>
+          <textarea id="request-details" name="details" rows="5"
+                    placeholder="อธิบายปัญหาหรือสิ่งที่ต้องการ (อย่างน้อย 10 ตัวอักษร)"
+                    aria-describedby="request-details-error"></textarea>
+          <p id="request-details-error" class="error" role="alert"></p>
+        </div>
+
+        <button type="submit">Submit Request</button>
+        <p id="form-status" class="status" role="status"></p>
+      </form>
+    </section>
+
+    <aside class="panel preview-panel" aria-labelledby="preview-title">
+      <h2 id="preview-title">Live Preview</h2>
+      <dl id="preview" aria-live="polite">
+        <div><dt>Name</dt><dd id="preview-name">ยังไม่ระบุชื่อ</dd></div>
+        <div><dt>Type</dt><dd id="preview-type">ยังไม่เลือกประเภท</dd></div>
+        <div><dt>Details</dt><dd id="preview-details">ยังไม่มีรายละเอียด</dd></div>
+      </dl>
+      <h3>Submitted Requests</h3>
+      <ul id="request-list" class="request-list"></ul>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "engse203-week11-campus-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "test": "vitest run",
+    "check": "node scripts/check-project.mjs",
+    "client": "node scripts/serve-client.mjs",
+    "db:seed": "node --env-file-if-exists=.env scripts/seed.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.9.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2",
+    "vitest": "^2.1.0"
+  }
+}

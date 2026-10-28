@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Service Request — API Client</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="hero"><div class="container">
+    <p class="eyebrow">ENGSE203 • LAB 08</p>
+    <h1>Campus Service Request</h1>
+    <p>Front-end เรียก REST API จริง (<code id="api-base"></code>)</p>
+  </div></header>
+
+  <main class="container grid">
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">สร้างคำร้องใหม่</h2>
+      <form id="request-form" novalidate>
+        <div class="field"><label for="requesterName">ชื่อผู้แจ้ง</label><input id="requesterName" name="requesterName" /></div>
+        <div class="field"><label for="requestType">ประเภท</label>
+          <select id="requestType" name="requestType">
+            <option value="แจ้งซ่อม">แจ้งซ่อม</option>
+            <option value="ขอใช้ห้อง">ขอใช้ห้อง</option>
+            <option value="บริการบัญชีผู้ใช้">บริการบัญชีผู้ใช้</option>
+          </select></div>
+        <div class="field"><label for="location">สถานที่</label><input id="location" name="location" /></div>
+        <div class="field"><label for="details">รายละเอียด</label><textarea id="details" name="details" rows="3"></textarea></div>
+        <div class="field"><label for="priority">ความเร่งด่วน</label>
+          <select id="priority" name="priority"><option value="normal">ปกติ</option><option value="urgent">เร่งด่วน</option></select></div>
+        <button type="submit">เพิ่มคำร้อง</button>
+        <ul id="form-errors" class="errors" role="alert"></ul>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="list-title">
+      <div class="heading">
+        <h2 id="list-title">รายการคำร้อง</h2>
+        <label class="inline">สถานะ
+          <select id="status-filter">
+            <option value="">ทั้งหมด</option>
+            <option value="pending">pending</option>
+            <option value="in-progress">in-progress</option>
+            <option value="completed">completed</option>
+          </select>
+        </label>
+      </div>
+      <p id="message" role="status"></p>
+      <div id="list"></div>
+    </section>
+  </main>
+</body>
+</html>
